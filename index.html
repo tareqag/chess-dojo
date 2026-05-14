@@ -901,9 +901,10 @@ function setStatus(msg,type=''){
 // ═══════════════════════════════════
 window.addEventListener('DOMContentLoaded',()=>{
   renderHome();
-  document.getElementById('loadView').classList.add('off-l');
+  // Skip loading screen — go straight to home
+  document.getElementById('loadView').style.display='none';
   document.getElementById('homeView').classList.remove('off-r','off-l');
-  setTimeout(initSF,100);
+  initSF();
 });
 
 // Prevent elastic scroll on iOS
