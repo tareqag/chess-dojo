@@ -169,12 +169,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);font-
 </head>
 <body>
 
-<!-- LOADING -->
-<div class="view" id="loadView">
-  <div class="load-jp">道</div>
-  <div class="load-txt">Loading engine</div>
-</div>
-
 <!-- HOME -->
 <div class="view off-r" id="homeView">
   <div class="bar">
@@ -901,8 +895,6 @@ function setStatus(msg,type=''){
 // ═══════════════════════════════════
 window.addEventListener('DOMContentLoaded',()=>{
   renderHome();
-  // Skip loading screen — go straight to home
-  document.getElementById('loadView').style.display='none';
   document.getElementById('homeView').classList.remove('off-r','off-l');
   initSF();
 });
