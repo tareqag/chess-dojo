@@ -539,7 +539,7 @@ function sfBestMove(fen,depth,cb){
     }
   };
   sfCbs.push(handler);
-  const skill=Math.round(Math.max(0,Math.min(20,((G.elo-600)/200)));
+  const skill=Math.round(Math.max(0,Math.min(20,(G.elo-600)/200)));
   sf.postMessage('setoption name Skill Level value '+skill);
   sf.postMessage('position fen '+fen);
   sf.postMessage('go depth '+depth);
