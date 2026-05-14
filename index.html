@@ -515,34 +515,18 @@ function boardToFen(board,turn){
 let sf=null,sfCbs=[];
 function initSF(){
   // Fetch script and create a Blob Worker — bypasses GitHub Pages CORS block on cross-origin Workers
-  const URLS=[
-    'https://cdn.jsdelivr.net/npm/stockfish.js@10.0.2/stockfish.js',
-    'https://unpkg.com/stockfish.js@10.0.2/stockfish.js',
-  ];
-  function tryBlob(urls){
-    if(!urls.length){setSFUI(false);// No engine — show home anyway
-      document.getElementById('loadView').classList.add('off-l');
-      document.getElementById('homeView').classList.remove('off-r','off-l');
-      return;}
-    const url=urls[0];
-    fetch(url)
-      .then(r=>r.text())
-      .then(code=>{
-        const blob=new Blob([code],{type:'application/javascript'});
-        const blobUrl=URL.createObjectURL(blob);
-        sf=new Worker(blobUrl);
-        sf.onmessage=e=>{
-          const l=typeof e.data==='string'?e.data:String(e.data);
-          sfCbs.forEach(c=>c(l));
-          if(l.includes('readyok')||l.includes('uciok')){G.sfReady=true;setSFUI(true);}
-        };
-        sf.onerror=()=>{sf=null;tryBlob(urls.slice(1));};
-        sf.postMessage('uci');
-        sf.postMessage('isready');
-      })
-      .catch(()=>tryBlob(urls.slice(1)));
-  }
-  tryBlob(URLS);
+  // Local file — same origin, no CORS issues
+  try {
+    sf = new Worker('./stockfish.js');
+    sf.onmessage = e => {
+      const l = typeof e.data === 'string' ? e.data : String(e.data);
+      sfCbs.forEach(c => c(l));
+      if (l.includes('readyok') || l.includes('uciok')) { G.sfReady = true; setSFUI(true); }
+    };
+    sf.onerror = () => { sf = null; setSFUI(false); };
+    sf.postMessage('uci');
+    sf.postMessage('isready');
+  } catch(e) { setSFUI(false); }
 }
 function setSFUI(on){
   document.getElementById('sfDot').className='sf-dot'+(on?' on':'');
