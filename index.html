@@ -170,7 +170,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);font-
 <body>
 
 <!-- HOME -->
-<div class="view off-r" id="homeView">
+<div class="view" id="homeView">
   <div class="bar">
     <div style="min-width:38px"></div>
     <div class="bar-title">道 · Dojo</div>
@@ -556,12 +556,12 @@ function adjustElo(won){
 // ═══════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════
+const VIEWS=['homeView','detailView','boardView'];
 function nav(from,to){
   document.getElementById(from).classList.add('off-r');
   const t=document.getElementById(to);
   t.classList.remove('off-r','off-l');
-  // Push all other views left
-  ['loadView','homeView','detailView','boardView'].forEach(id=>{
+  VIEWS.forEach(id=>{
     if(id!==to&&id!==from){
       const el=document.getElementById(id);
       if(!el.classList.contains('off-r'))el.classList.add('off-l');
@@ -569,7 +569,7 @@ function nav(from,to){
   });
 }
 function goTo(id){
-  ['loadView','homeView','detailView','boardView'].forEach(v=>{
+  VIEWS.forEach(v=>{
     const el=document.getElementById(v);
     if(v===id){el.classList.remove('off-r','off-l');}
     else{el.classList.add('off-l');el.classList.remove('off-r');}
